@@ -3,7 +3,7 @@ on: [push]
 
 jobs:
   job1:
-    runs-on:ubuntu-latest
+    runs-on: ubuntu-latest
     steps:
     - name:Pulling git repo
       uses : actions/checkout@v2
