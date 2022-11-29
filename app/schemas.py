@@ -7,6 +7,9 @@ class Topics(BaseModel):
     name:str
     content:str
 
+class TopicsCreate(Topics):
+    pass
+
 class TopicsOut(Topics):
     class Config:
         orm_mode=True

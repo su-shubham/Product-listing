@@ -32,6 +32,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.get('/', response_class=RedirectResponse)
+# @app.get('/', response_class=RedirectResponse)
+# def home():
+#     return "https://pro-hunt.netlify.app/"
+
+@app.get('/')
 def home():
-    return "https://pro-hunt.netlify.app/"
+    return {"msg":"Hello world!!!"}

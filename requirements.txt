@@ -27,7 +27,7 @@ makefun==1.15.0
 Mako==1.2.3
 MarkupSafe==2.1.1
 orjson==3.8.0
-psycopg2==2.9.4
+# psycopg2==2.9.4
 pycodestyle==2.9.1
 pycparser==2.21
 pydantic==1.10.2
@@ -51,3 +51,4 @@ watchfiles==0.17.0
 websockets==10.3
 wrapt==1.14.1
 WTForms==3.0.1
+psycopg2-binary==2.9.4

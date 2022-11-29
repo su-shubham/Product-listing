@@ -18,7 +18,7 @@ async def get_posts(db:Session=Depends(get_db)):
     return posts
 
 @router.get('/{id}',response_model=schemas.PostOut)
-def get_one_post(id:int,db:Session=Depends(get_db),access_token_info: FiefAccessTokenInfo = Depends(auth.authenticated())):
+async def get_one_post(id:int,db:Session=Depends(get_db),access_token_info: FiefAccessTokenInfo = Depends(auth.authenticated())):
     get_one_posts = db.query(models.Post).filter(models.Post.id==id).first()
     
 
@@ -30,7 +30,7 @@ def get_one_post(id:int,db:Session=Depends(get_db),access_token_info: FiefAccess
 
 
 @router.post('/',status_code=status.HTTP_201_CREATED,response_model=schemas.PostOut)
-def create_posts(posts:schemas.Post,db:Session=Depends(get_db)):
+async def create_posts(posts:schemas.Post,db:Session=Depends(get_db)):
     new_posts=models.Post(**posts.dict())
     db.add(new_posts)
     db.commit()
@@ -38,7 +38,7 @@ def create_posts(posts:schemas.Post,db:Session=Depends(get_db)):
     return new_posts
 
 @router.delete('/{id}',status_code=status.HTTP_204_NO_CONTENT)
-def delete_posts(id:int,db:Session=Depends(get_db),access_token_info: FiefAccessTokenInfo = Depends(auth.authenticated())):
+async def delete_posts(id:int,db:Session=Depends(get_db),access_token_info: FiefAccessTokenInfo = Depends(auth.authenticated())):
     delete_query = db.query(models.Post).filter(models.Post.id==id)
     delete_post = delete_query.first()
     if not delete_post:
@@ -48,7 +48,7 @@ def delete_posts(id:int,db:Session=Depends(get_db),access_token_info: FiefAccess
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 
 @router.put('/{id}')
-def update_posts(id:int,updates_post:schemas.PostsCreate,db:Session=Depends(get_db),access_token_info: FiefAccessTokenInfo = Depends(auth.authenticated())):
+async def update_posts(id:int,updates_post:schemas.PostsCreate,db:Session=Depends(get_db),access_token_info: FiefAccessTokenInfo = Depends(auth.authenticated())):
     update_query = db.query(models.Post).filter(models.Post.id==id)
     if not update_query.first():
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail=f"Post with {id} is Not found")

@@ -1,0 +1,26 @@
+version: '3.4'
+
+services:
+  backend:
+    image: containeshubham/prohunt:v1
+    depends_on:
+      - postgres
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - 80:8000
+    env_file:
+      - .env
+  postgres:
+    image: postgres
+    env_file:
+    - ./.env
+    environment:
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
+      - POSTGRES_DB=${DATABASE_NAME}
+    volumes:
+      - postgres-db:/var/lib/postgresql/data
+
+volumes:
+  postgres-db:
