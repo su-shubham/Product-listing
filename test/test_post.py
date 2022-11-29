@@ -1,3 +1,4 @@
+from .database import client,session
 def test_app_main(client):
     response = client.get('/')
     assert response.json()=={"msg":"Hello world!!!"}
