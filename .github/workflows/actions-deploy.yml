@@ -44,4 +44,4 @@ jobs:
     - name: Testing Application
       run : |
         pip install pytest
-        pytest
+        pytest -v -s --import-mode=importlib 
