@@ -1,5 +1,9 @@
-from typing import Optional
-from pydantic import BaseModel, conint
+from typing import List,Dict,Any
+from pydantic import BaseModel, conint,EmailStr
+
+
+class EmailSchema(BaseModel):
+    email: List[EmailStr]|None=None
 
 class Topics(BaseModel):
     image_url:str
@@ -19,14 +23,15 @@ class Post(BaseModel):
     title:str
     description:str
     topic_id:str
-    topic:TopicsOut
+    
 
 class PostOut(Post):
-        class Config:
+    topic:TopicsOut
+    class Config:
             orm_mode=True
 
 class PostsCreate(Post):
-    id:int
+    pass
     
 class User(BaseModel):
     id:str

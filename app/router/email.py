@@ -1,24 +1,24 @@
-from fastapi import FastAPI,APIRouter
+from fastapi import FastAPI,APIRouter,BackgroundTasks,Request
 from starlette.responses import JSONResponse
 from fastapi_mail import FastMail, MessageSchema, ConnectionConfig, MessageType
 from pydantic import EmailStr, BaseModel
-from typing import List
-
-class EmailSchema(BaseModel):
-    email: List[EmailStr]
-
+from typing import List,Dict,Any
+from ..config import settings
+from pathlib import Path
+from ..schemas import EmailSchema
 
 conf = ConnectionConfig(
-    MAIL_USERNAME = "username",
-    MAIL_PASSWORD = "**********",
-    MAIL_FROM = "dev.shubham.net@gmail.com",
-    MAIL_PORT = 587,
-    MAIL_SERVER = "smtp.gmail.com",
-    MAIL_FROM_NAME="Desired Name",
-    MAIL_STARTTLS = True,
-    MAIL_SSL_TLS = False,
-    USE_CREDENTIALS = True,
-    VALIDATE_CERTS = True
+    MAIL_USERNAME = settings.MAIL_USERNAME,
+    MAIL_PASSWORD = settings.MAIL_PASSWORD,
+    MAIL_FROM = settings.MAIL_FROM,
+    MAIL_PORT = settings.MAIL_PORT,
+    MAIL_SERVER = settings.MAIL_SERVER,
+    MAIL_FROM_NAME=settings.MAIL_FROM_NAME,
+    MAIL_STARTTLS = settings.MAIL_STARTTLS,
+    MAIL_SSL_TLS = settings.MAIL_SSL_TLS,
+    USE_CREDENTIALS = settings.USE_CREDENTIALS,
+    VALIDATE_CERTS = settings.VALIDATE_CERTS,
+    TEMPLATE_FOLDER =  './app/templates/',
 )
 
 router=APIRouter(
@@ -27,16 +27,18 @@ router=APIRouter(
 )
 
 
-@router.post("/email")
-async def simple_send(email: EmailSchema) -> JSONResponse:
-    html = """<p>Hi this test mail, thanks for using Fastapi-mail</p> """
-
+@router.post("/")
+async def email(request:Request,background:BackgroundTasks) -> JSONResponse:
+    email=await request.json()
     message = MessageSchema(
-        subject="Fastapi-Mail module",
-        recipients=email.dict().get("email"),
-        body=html,
-        subtype=MessageType.html)
+        subject="Welcome to FastAPI",
+        recipients=email,
+        body="Simple background task",
+        # template_body=email.dict().get("body"),
+        subtype=MessageType.plain
+        )
 
     fm = FastMail(conf)
-    await fm.send_message(message)
+    # background.add_task(fm.send_message,message)
+    await fm.send_message(message,template_name="email.html")
     return JSONResponse(status_code=200, content={"message": "email has been sent"})
