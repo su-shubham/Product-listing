@@ -1,10 +1,6 @@
 from typing import List,Dict,Any
 from pydantic import BaseModel, conint,EmailStr
 
-
-class EmailSchema(BaseModel):
-    email: List[EmailStr]|None=None
-
 class Topics(BaseModel):
     image_url:str
     topic_url:str
