@@ -4,7 +4,8 @@ from .database import engine
 from sqladmin import Admin
 from .sqladmin_view import PostsAdmin, UserAdmin,TopicsAdmin
 from fastapi.middleware.cors import CORSMiddleware
-import pprint
+from fastapi.openapi.utils import get_openapi
+
 
 app = FastAPI()
 
@@ -35,3 +36,19 @@ async def home(request:Request):
     data = await request.body()
     print(data)
     return {"message":"Success"}
+
+def my_schema():
+   openapi_schema = get_openapi(
+       title="Prohunt",
+       version="0.1.0",
+       routes=app.routes,
+   )
+   openapi_schema["info"] = {
+       "title" : "Prohunt",
+       "version" : "0.1.0",
+       "description" : "Product Listing & Voting API",
+   }
+   app.openapi_schema = openapi_schema
+   return app.openapi_schema
+
+app.openapi = my_schema
