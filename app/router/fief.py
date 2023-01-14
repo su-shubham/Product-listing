@@ -7,14 +7,14 @@ router=APIRouter(
     tags=['Users']
 )
 fief = FiefAsync(  
-    "https://hellofief.fief.dev/",
-    "ZtMb_HVlWr4IhmUXbBFNyK39s6ZBGEjRz4S8IQ3GOhI",
-    "qBV6yxZeV5rAXLxnT7BBORT0WpP9CYs16cXppwJwj7Q",
+    "{}",
+    "{}",
+    "{}",
 )
 
 scheme = OAuth2AuthorizationCodeBearer(  
-    "https://hellofief.fief.dev/authorize",  
-    "https://hellofief.fief.dev/api/token",  
+    "{}",  
+    "{}",  
     scopes={"openid": "openid", "offline_access": "offline_access"},
 )
 
