@@ -22,7 +22,7 @@ httpx==0.23.0
 idna==3.4
 itsdangerous==2.1.2
 Jinja2==3.1.2
-jwcrypto==1.4.2
+jwcrypto==1.5.1
 makefun==1.15.0
 Mako==1.2.3
 MarkupSafe==2.1.1
